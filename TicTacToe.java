@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Stack;
+import java.util.Collections;
 
 public class TicTacToe {
 
@@ -79,23 +80,25 @@ public class TicTacToe {
     }
 
     private static void undoMove() {
-        if (moveStack.isEmpty()) {
-            System.out.println("There is no move to undo.");
-            return;
-        }
-
-        Move lastMove = moveStack.pop();
-
-        int row = (lastMove.position - 1) / 3;
-        int col = (lastMove.position - 1) % 3;
-
-        board[row][col] = EMPTY;
-        emptyCells.add(lastMove.position);
-
-        System.out.println("Undid player " + lastMove.player
-                + "'s move at position " + lastMove.position + ".");
+    if (moveStack.isEmpty()) {
+        System.out.println("There is no move to undo.");
+        return;
     }
 
+    Move lastMove = moveStack.pop();
+
+    int row = (lastMove.position - 1) / 3;
+    int col = (lastMove.position - 1) % 3;
+
+    board[row][col] = EMPTY;
+    emptyCells.add(lastMove.position);
+    Collections.sort(emptyCells);
+
+    System.out.println("Undid player " + lastMove.player
+            + "'s move at position " + lastMove.position + ".");
+}
+
+   
     private static boolean checkWinner(char player) {
         for (int row = 0; row < 3; row++) {
             if (board[row][0] == player &&
@@ -289,7 +292,7 @@ public class TicTacToe {
                     System.out.println("It's a draw!");
                     break;
                 }
-
+System.out.println(emptyCells);
                 computerMove();
 
                 if (checkWinner(COMPUTER)) {
