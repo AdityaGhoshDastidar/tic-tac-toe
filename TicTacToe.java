@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Stack;
-import java.util.Collections;
 
 public class TicTacToe {
 
@@ -9,9 +8,9 @@ public class TicTacToe {
     private static final char HUMAN = 'X';
     private static final char COMPUTER = 'O';
 
-    private static char[][] board = new char[3][3];
-    private static Stack<Move> moveStack = new Stack<>();
-    private static ArrayList<Integer> emptyCells = new ArrayList<>();
+     static char[][] board = new char[3][3];
+     static Stack<Move> moveStack = new Stack<>();
+     static ArrayList<Integer> emptyCells = new ArrayList<>();
 
     static class Move {
         int position;
@@ -70,7 +69,7 @@ public class TicTacToe {
         return board[row][col] == EMPTY;
     }
 
-    private static void makeMove(int position, char player) {
+     static void makeMove(int position, char player) {
         int row = (position - 1) / 3;
         int col = (position - 1) % 3;
 
@@ -79,27 +78,25 @@ public class TicTacToe {
         emptyCells.remove(Integer.valueOf(position));
     }
 
-    private static void undoMove() {
-    if (moveStack.isEmpty()) {
-        System.out.println("There is no move to undo.");
-        return;
+     static void undoMove() {
+        if (moveStack.isEmpty()) {
+            System.out.println("There is no move to undo.");
+            return;
+        }
+
+        Move lastMove = moveStack.pop();
+
+        int row = (lastMove.position - 1) / 3;
+        int col = (lastMove.position - 1) % 3;
+
+        board[row][col] = EMPTY;
+        emptyCells.add(lastMove.position);
+
+        System.out.println("Undid player " + lastMove.player
+                + "'s move at position " + lastMove.position + ".");
     }
 
-    Move lastMove = moveStack.pop();
-
-    int row = (lastMove.position - 1) / 3;
-    int col = (lastMove.position - 1) % 3;
-
-    board[row][col] = EMPTY;
-    emptyCells.add(lastMove.position);
-    Collections.sort(emptyCells);
-
-    System.out.println("Undid player " + lastMove.player
-            + "'s move at position " + lastMove.position + ".");
-}
-
-   
-    private static boolean checkWinner(char player) {
+     static boolean checkWinner(char player) {
         for (int row = 0; row < 3; row++) {
             if (board[row][0] == player &&
                 board[row][1] == player &&
@@ -131,7 +128,7 @@ public class TicTacToe {
         return false;
     }
 
-    private static boolean boardFull() {
+     static boolean boardFull() {
         return emptyCells.isEmpty();
     }
 
@@ -292,7 +289,7 @@ public class TicTacToe {
                     System.out.println("It's a draw!");
                     break;
                 }
-System.out.println(emptyCells);
+
                 computerMove();
 
                 if (checkWinner(COMPUTER)) {
